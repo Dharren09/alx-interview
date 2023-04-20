@@ -2,7 +2,6 @@
 
 """Module implements pascal triangle"""
 
-
 def pascal_triangle(n):
     """Function implements pascal traingle"""
     current = []
@@ -24,4 +23,4 @@ def pascal_triangle(n):
             result.append(new)
             current.clear()
             current.extend(new)
-    return 
+    return result
