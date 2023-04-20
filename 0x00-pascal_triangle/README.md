@@ -1,0 +1,1 @@
+The Pascal's triangle is a triangular array of numbers in which the first and last numbers in each row are 1, and each of the other numbers is the sum of the two numbers immediately above it in the previous row. It is named after the French mathematician Blaise Pascal, although it was known by Chinese mathematicians over 500 years earlier.
