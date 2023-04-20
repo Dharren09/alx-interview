@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-
 """Module implements pascal triangle"""
 
+
 def pascal_triangle(n):
-    """Function implements pascal traingle"""
+    """Function implements pascal triangle"""
     current = []
     result = []
     if n <= 0:
