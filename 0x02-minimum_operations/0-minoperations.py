@@ -7,7 +7,6 @@ def minOperations(n):
     """creates a list of operations with 0 as first element and
     inf->infinity which initialize operations"""
     operations = [0] + [float('inf')] * n
-    
     for i in range(2, n+1):
         for j in range(1, i):
             """check if j is a divisor of i"""
