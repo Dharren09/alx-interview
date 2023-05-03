@@ -1,18 +1,30 @@
 #!/usr/bin/python3
-""" text file containing a single character H which can only execute
-copy all and paste given a number n"""
 
+# This is a function that takes an integer n and returns the minimum
+# number of operations needed to obtain n H's in a text file, given that
+# the only operations allowed are copy all and paste.
 
 def minOperations(n):
-    """creates a list of operations with 0 as first element and
-    inf->infinity which initialize operations"""
-    operations = [0] + [float('inf')] * n
-    for i in range(2, n+1):
-        for j in range(1, i):
-            """check if j is a divisor of i"""
-            if i % j == 0:
-                """update the value of operations[i] to be the min, then find
-                out how many times needed to paste j H's to get i H's"""
-                operations[i] = min(operations[i], operations[j] + i // j)
-    """return an int, if n is impossible to achieve return 0"""
-    return operations[n] if operations[n] < float('inf') else 0
+    
+    # Check if n is an integer; if not, return 0
+    if not isinstance(n, int):
+        return 0
+    
+    # Set up a counter for operations and an iterator starting from 2
+    operations = 0
+    iterator = 2
+    
+    # While the iterator is less than or equal to n, check if n is
+    # divisible by the iterator. If it is, divide n by the iterator,
+    # add the value of the iterator to the operations counter, and
+    # reset the iterator to 1 to start checking from the beginning.
+    # If it's not divisible, increment the iterator by 1 and continue.
+    while (iterator <= n):
+        if not (n % iterator):
+            n = int(n / iterator)
+            operations += iterator
+            iterator = 1
+        iterator += 1
+    
+    # Return the operations counter
+    return operations
