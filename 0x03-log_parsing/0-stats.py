@@ -16,15 +16,22 @@ def compute_metrics():
     total_file_size = 0
     count = 0
     try:
-        for line in sys.stdin:
-            match = re.match(
-                r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] '
-                r'"GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$',
-                line)
+        while True:
+            line = sys.stdin.readline()
+            if not line:
+                break
+
+            st = r'\[(.*?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$'
+            pattern = r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - ' + st
+
+            match = re.match(pattern, line)
             if not match:
                 continue
 
             status_code = match.group(3)
+
+            if not int(status_code):
+                continue
 
             if status_code in status_dict:
                 count += 1
@@ -32,18 +39,20 @@ def compute_metrics():
                 total_file_size += int(match.group(4))
 
             if count == 10:
-                print(f"Total file size: {total_file_size}")
-                for key, value in sorted(status_dict.items(),
-                                         key=lambda x: x[0]):
+                print("Total file size: {}".format(total_file_size))
+                sorted_dict = sorted(status_dict.items(),
+                                     key=lambda x: x)
+                for key, value in sorted_dict:
                     if value != 0:
-                        print(f"{key}: {value}")
-            count = 0
-    except KeyboardInterrupt:
-        print(f"Total file size: {total_file_size}")
-        for key, value in sorted(status_dict.items(),
-                                 key=lambda x: x[0]):
+                        print("{}: {}".format(key, value))
+                count = 0
+    except KeyboardInterrupt as e:
+        sorted_dict = sorted(status_dict.items(),
+                             key=lambda x: x)
+        for key, value in sorted_dict:
             if value != 0:
-                print(f"{key}: {value}")
+                print("{}: {}".format(key, value))
+        print(e)
 
 
 if __name__ == "__main__":
