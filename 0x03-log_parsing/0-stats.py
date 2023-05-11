@@ -1,45 +1,50 @@
 #!/usr/bin/python3
-""" script that reads a stdin line by line
-and computes the metrics"""
 
+"""
+reads stdin line by line and computes the metrics.
+status code should printed in ascending order
+"""
 
+import re
 import sys
 
 
-def compute_metrics(total_size, status_codes):
-    print("File size: {}".format(total_size))
-    for code in sorted(status_codes.keys()):
-        if status_codes[code]:
-            print("{}: {}".format(code, status_codes[code]))
+def compute_metrics():
+    """possible status codes inserted in a dictionary"""
+    status_dict = {"200": 0, "301": 0, "400": 0,
+                   "401": 0, "403": 0, "404": 0, "405": 0, "500": 0}
+    total_file_size = 0
+    count = 0
+    try:
+        for line in sys.stdin:
+            match = re.match(
+                r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] '
+                r'"GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$',
+                line)
+            if not match:
+                continue
 
-    """Initialize the variables to store the metrics"""
-    total_size = 0
-    status_codes = {200: 0, 301: 0, 400: 0,
-                    401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-    line_count = 0
+            status_code = match.group(3)
+
+            if status_code in status_dict:
+                count += 1
+                status_dict[status_code] += 1
+                total_file_size += int(match.group(4))
+
+            if count == 10:
+                print(f"Total file size: {total_file_size}")
+                for key, value in sorted(status_dict.items(),
+                                         key=lambda x: x[0]):
+                    if value != 0:
+                        print(f"{key}: {value}")
+            count = 0
+    except KeyboardInterrupt:
+        print(f"Total file size: {total_file_size}")
+        for key, value in sorted(status_dict.items(),
+                                 key=lambda x: x[0]):
+            if value != 0:
+                print(f"{key}: {value}")
 
 
-try:
-    """iterate through the input lines"""
-    for line in sys.stdin:
-        """split the line into two parts"""
-        parts = line.split()
-        if len(parts) == 7:
-            status_code = int(parts[5])
-            file_size = int(parts[6])
-            total_size += file_size
-            if status_code in status_codes:
-                status_codes[status_code] += 1
-            line_count += 1
-            """ print the metrics processed 10 times"""
-            if line_count % 10 == 0:
-                compute_metrics(total_size, status_codes)
-            """ Handle the keyboard Interrupt """
-            if KeyboardInterrupt:
-                compute_metrics(total_size, status_codes)
-                sys.exit(0)
-
-
-except KeyboardInterrupt:
-    compute_metrics(total_size, status_codes)
-    sys.exit(0)
+if __name__ == "__main__":
+    compute_metrics()
