@@ -10,14 +10,8 @@ import sys
 
 # a regular xpression to match the input format
 regex = re.compile(
-    r'^
-    (\d{1, 3}\.\d{1, 3}\.\d{1, 3})\.\d{1, 3}
-    - [(.*?)\]
-    "GET /projects/260 HTTP/1.1"
-    (\d+)
-    (\d+)
-    $
-    ')
+    r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)$'
+)
 
 # Initialize variables
 total_size = 0
