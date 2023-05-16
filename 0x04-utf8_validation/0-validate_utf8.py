@@ -3,6 +3,7 @@
 valid UTF-8 encoding"""
 
 
+
 def validUTF8(data):
     """initialize the variable to keep track of the number of bytes"""
     numBytes = 0
