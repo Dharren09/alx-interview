@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-"""methid that determines if a given data set represents a 
+"""methid that determines if a given data set represents a
 valid UTF-8 encoding"""
 
 
 def validUTF8(data):
     """initialize the variable to keep track of the number of bytes"""
     numBytes = 0
-    
+
     for byte in data:
         if numBytes == 0:
             if byte >> 7 == 0b0:
@@ -24,6 +24,6 @@ def validUTF8(data):
             if byte >> 6 != 0b10:
                 return False
             numBytes -= 1
-    
+
     """check if all characters were completed"""
     return numBytes == 0
