@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""methid that determines if a given data set represents a
+"""method that determines if a given data set represents a
 valid UTF-8 encoding"""
 
 
@@ -7,6 +7,7 @@ def validUTF8(data):
     """initialize the variable to keep track of the number of bytes"""
     numBytes = 0
 
+    """iterate over each byte in the data list"""
     for byte in data:
         if numBytes == 0:
             if byte >> 7 == 0b0:
