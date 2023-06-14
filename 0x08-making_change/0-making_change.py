@@ -6,18 +6,18 @@ needed to meet a given aamount given a pile of coins of different values"""
 def makeChange(coins, total):
     if total <= 0:
         return 0
+    dip = total
+    count_coins = 0
+    coin_idx = 0
+    sorted_coins = sorted(coins, reverse=True)
+    n = len(coins)
+    while dip > 0:
+        if coin_idx >= n:
+            return -1
+        if dip - sorted_coins[coin_idx] >= 0:
+            dip -= sorted_coins[coin_idx]
+            count_coins += 1
+        else:
+            coin_idx += 1
+    return count_coins
 
-    """initialize a list to store the minimum number of coins"""
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0
-
-    """iterate through all possible totals"""
-    for i in range(1, total + 1):
-        for coin in coins:
-            if i - coin >= 0:
-                min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
-
-    if min_coins[total] == float('inf'):
-        return -1
-    else:
-        return min_coins[total]
